@@ -112,3 +112,8 @@ mv $SRC/htaccess $WEBROOT/.htaccess
 /etc/init.d/mysql stop
 /etc/init.d/apache2 stop
 
+# cleanup
+rm -f /tmp/cookie
+rm -f $WORKDIR/*
+rm -rf $WEBROOT/install
+
