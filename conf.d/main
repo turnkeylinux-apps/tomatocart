@@ -36,3 +36,8 @@ chown -R www-data:www-data $WEBROOT/cache
 chown -R www-data:www-data $WEBROOT/images
 chown -R www-data:www-data $WEBROOT/ext/piwik/tmp
 
+# configure apache
+a2dissite default
+a2ensite tomatocart
+a2enmod rewrite
+
