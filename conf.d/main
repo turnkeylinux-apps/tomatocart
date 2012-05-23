@@ -1,0 +1,14 @@
+#!/bin/sh -ex
+
+DB_NAME=tomatocart
+DB_USER=tomatocart
+DB_PASS=$(mcookie)
+
+ADMIN_NAME=admin
+ADMIN_PASS=turnkey
+ADMIN_MAIL=admin@example.com
+
+SRC=/usr/local/src
+WEBROOT=/var/www/tomatocart
+WORKDIR=/var/cache/tomatocart
+
