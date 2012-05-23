@@ -101,6 +101,9 @@ $MYSQL_BATCH --database=$DB_NAME --execute "INSERT INTO configuration VALUES (''
 
 $MYSQL_BATCH --database=$DB_NAME --execute "UPDATE configuration SET configuration_value = 'session;language;sefu;currencies;core;whos_online;simple_counter;category_path;recently_visited;breadcrumb;specials;reviews;piwik' WHERE configuration_key = 'MODULE_SERVICES_INSTALLED';"
 
+# htaccess file not included in zip, wtf!?
+mv $SRC/htaccess $WEBROOT/.htaccess
+
 # stop services
 /etc/init.d/mysql stop
 /etc/init.d/apache2 stop
