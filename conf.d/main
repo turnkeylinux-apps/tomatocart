@@ -94,6 +94,13 @@ sed -i "s|ENABLE_SSL'.*|ENABLE_SSL', true);|" $CONF
 sed -i "s|login.*|login = \"$ADMIN_NAME\"|" $WEBROOT/ext/piwik/config/config.ini.php
 ln -s $WEBROOT/ext/piwik $WEBROOT/piwik
 
+# tweak services (disable gzip, enable seo friendly urls, enable piwik)
+$MYSQL_BATCH --database=$DB_NAME --execute "DELETE FROM configuration WHERE configuration_key = 'SERVICE_OUTPUT_COMPRESSION_GZIP_LEVEL';"
+
+$MYSQL_BATCH --database=$DB_NAME --execute "INSERT INTO configuration VALUES ('', 'Create keyword-rich URLs', 'SERVICES_KEYWORD_RICH_URLS', 1, 'Create keyword-rich URLs for categories, products, articles and faqs.', 6, 7, NULL, '2012-05-23 10:42:56', 'osc_cfg_use_get_boolean_value', 'osc_cfg_set_boolean_value\(array\(1, -1\)\)');"
+
+$MYSQL_BATCH --database=$DB_NAME --execute "UPDATE configuration SET configuration_value = 'session;language;sefu;currencies;core;whos_online;simple_counter;category_path;recently_visited;breadcrumb;specials;reviews;piwik' WHERE configuration_key = 'MODULE_SERVICES_INSTALLED';"
+
 # stop services
 /etc/init.d/mysql stop
 /etc/init.d/apache2 stop
