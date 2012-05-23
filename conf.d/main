@@ -90,6 +90,10 @@ sed -i "s|HTTP_COOKIE.*|HTTP_COOKIE_DOMAIN', \$_SERVER['HTTP_HOST']);|" $CONF
 sed -i "s|HTTPS_COOKIE.*|HTTPS_COOKIE_DOMAIN', \$_SERVER['HTTP_HOST']);|" $CONF
 sed -i "s|ENABLE_SSL'.*|ENABLE_SSL', true);|" $CONF
 
+# change default piwik admin username, and setup symlink for easy access
+sed -i "s|login.*|login = \"$ADMIN_NAME\"|" $WEBROOT/ext/piwik/config/config.ini.php
+ln -s $WEBROOT/ext/piwik $WEBROOT/piwik
+
 # stop services
 /etc/init.d/mysql stop
 /etc/init.d/apache2 stop
