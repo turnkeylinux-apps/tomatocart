@@ -12,3 +12,27 @@ SRC=/usr/local/src
 WEBROOT=/var/www/tomatocart
 WORKDIR=/var/cache/tomatocart
 
+# unpack and configure permissions
+mkdir -p $WEBROOT
+unzip $SRC/TomatoCart-*.zip -d $WEBROOT
+rm $SRC/TomatoCart-*.zip
+chown -R root:root $WEBROOT
+chown www-data:www-data $WEBROOT/*.xml
+chown www-data:www-data $WEBROOT/includes/configure.php
+chown www-data:www-data $WEBROOT/includes/languages
+chown www-data:www-data $WEBROOT/includes/work
+chown www-data:www-data $WEBROOT/includes/logs
+chown www-data:www-data $WEBROOT/ext/piwik/
+chown www-data:www-data $WEBROOT/ext/piwik/config
+chown www-data:www-data $WEBROOT/ext/piwik/config/config.ini.php
+chown www-data:www-data $WEBROOT/admin/images
+chown www-data:www-data $WEBROOT/admin/backups
+chown www-data:www-data $WEBROOT/admin/includes/languages
+chown www-data:www-data $WEBROOT/install/includes/languages
+chown www-data:www-data $WEBROOT/install/templates/main_page/languages
+chown www-data:www-data $WEBROOT/download
+chown www-data:www-data $WEBROOT/templates
+chown -R www-data:www-data $WEBROOT/cache
+chown -R www-data:www-data $WEBROOT/images
+chown -R www-data:www-data $WEBROOT/ext/piwik/tmp
+
