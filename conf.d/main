@@ -101,6 +101,9 @@ $MYSQL_BATCH --database=$DB_NAME --execute "INSERT INTO configuration VALUES (''
 
 $MYSQL_BATCH --database=$DB_NAME --execute "UPDATE configuration SET configuration_value = 'session;language;sefu;currencies;core;whos_online;simple_counter;category_path;recently_visited;breadcrumb;specials;reviews;piwik' WHERE configuration_key = 'MODULE_SERVICES_INSTALLED';"
 
+# set admin email and password (piwik is random) - only really for testing
+/usr/lib/inithooks/bin/tomatocart.py --email="$ADMIN_MAIL" --pass="$ADMIN_PASS" --domain="127.0.0.1"
+
 # make sensitive non-world readable
 chmod 640 $WEBROOT/ext/piwik/config/config.ini.php
 chmod 640 $WEBROOT/includes/configure.php
