@@ -89,11 +89,11 @@ def main():
 
     m.execute('UPDATE tomatocart.piwik_site SET main_url=\"http://%s\" WHERE idsite=1;' % domain)
 
-    CONFIG="/var/www/tomatocart/ext/piwik/config/config.ini.php"
-    old = file(CONFIG).read()
-    new = re.sub("email.*", "email = \"%s\"" % email, old)
-    new = re.sub("password.*", "password = \"%s\"" % p_hash, old, count=1)
-    file(CONFIG, "w").write(new)
+    config = "/var/www/tomatocart/ext/piwik/config/config.ini.php"
+    s = file(config).read()
+    s = re.sub("email.*", "email = \"%s\"" % email, s)
+    s = re.sub("password.*", "password = \"%s\"" % p_hash, s, count=1)
+    file(config, "w").write(s)
 
     # delete cache
     system("rm -f /var/cache/tomatocart/*")
