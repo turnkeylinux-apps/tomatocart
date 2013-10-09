@@ -13,18 +13,15 @@ WEBROOT=/var/www/tomatocart
 WORKDIR=/var/cache/tomatocart
 
 # unpack and configure permissions
-mkdir -p $WEBROOT
-unzip $SRC/TomatoCart-*.zip -d $WEBROOT
+unzip $SRC/TomatoCart-*.zip -d $(dirname $WEBROOT)
 rm $SRC/TomatoCart-*.zip
+mv $(dirname $WEBROOT)/TomatoCart-* $WEBROOT
 chown -R root:root $WEBROOT
 chown www-data:www-data $WEBROOT/*.xml
 chown www-data:www-data $WEBROOT/includes/configure.php
 chown www-data:www-data $WEBROOT/includes/languages
 chown www-data:www-data $WEBROOT/includes/work
 chown www-data:www-data $WEBROOT/includes/logs
-chown www-data:www-data $WEBROOT/ext/piwik/
-chown www-data:www-data $WEBROOT/ext/piwik/config
-chown www-data:www-data $WEBROOT/ext/piwik/config/config.ini.php
 chown www-data:www-data $WEBROOT/admin/images
 chown www-data:www-data $WEBROOT/admin/backups
 chown www-data:www-data $WEBROOT/admin/includes/languages
@@ -34,7 +31,6 @@ chown www-data:www-data $WEBROOT/download
 chown www-data:www-data $WEBROOT/templates
 chown -R www-data:www-data $WEBROOT/cache
 chown -R www-data:www-data $WEBROOT/images
-chown -R www-data:www-data $WEBROOT/ext/piwik/tmp
 
 # configure apache
 a2dissite default
@@ -90,26 +86,13 @@ sed -i "s|HTTP_COOKIE.*|HTTP_COOKIE_DOMAIN', \$_SERVER['HTTP_HOST']);|" $CONF
 sed -i "s|HTTPS_COOKIE.*|HTTPS_COOKIE_DOMAIN', \$_SERVER['HTTP_HOST']);|" $CONF
 sed -i "s|ENABLE_SSL'.*|ENABLE_SSL', true);|" $CONF
 
-# change default piwik admin username, and setup symlink for easy access
-sed -i "s|login.*|login = \"$ADMIN_NAME\"|" $WEBROOT/ext/piwik/config/config.ini.php
-ln -s $WEBROOT/ext/piwik $WEBROOT/piwik
-
-# tweak services (disable gzip, enable seo friendly urls, enable piwik)
+# tweak services (disable gzip, enable seo friendly urls)
 $MYSQL_BATCH --database=$DB_NAME --execute "DELETE FROM configuration WHERE configuration_key = 'SERVICE_OUTPUT_COMPRESSION_GZIP_LEVEL';"
 
 $MYSQL_BATCH --database=$DB_NAME --execute "INSERT INTO configuration VALUES ('', 'Create keyword-rich URLs', 'SERVICES_KEYWORD_RICH_URLS', 1, 'Create keyword-rich URLs for categories, products, articles and faqs.', 6, 7, NULL, '2012-05-23 10:42:56', 'osc_cfg_use_get_boolean_value', 'osc_cfg_set_boolean_value\(array\(1, -1\)\)');"
 
-$MYSQL_BATCH --database=$DB_NAME --execute "UPDATE configuration SET configuration_value = 'session;language;sefu;currencies;core;whos_online;simple_counter;category_path;recently_visited;breadcrumb;specials;reviews;piwik' WHERE configuration_key = 'MODULE_SERVICES_INSTALLED';"
-
-# set admin email and password (piwik is random) - only really for testing
-/usr/lib/inithooks/bin/tomatocart.py --email="$ADMIN_MAIL" --pass="$ADMIN_PASS" --domain="127.0.0.1"
-
-# make sensitive non-world readable
-chmod 640 $WEBROOT/ext/piwik/config/config.ini.php
+# make sensitive config non-world readable
 chmod 640 $WEBROOT/includes/configure.php
-
-# htaccess file not included in zip, wtf!?
-mv $SRC/htaccess $WEBROOT/.htaccess
 
 # stop services
 /etc/init.d/mysql stop
