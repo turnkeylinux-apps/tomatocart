@@ -1,3 +1,12 @@
+turnkey-tomatocart-14.0 (1) turnkey; urgency=low
+
+  * Upgraded to latest upstream version of TomatoCart (v1.1.8.6.1).
+
+  * Note: Please refer to turnkey-core's changelog for changes common to all
+    appliances. Here we only describe changes specific to this appliance.
+
+ -- Jeremy Davis <jeremy@turnkeylinux.org>  Fri, 19 Jun 2015 10:41:18 +1000
+ 
 turnkey-tomatocart-13.0 (1) turnkey; urgency=low
 
   * TomatoCart:
