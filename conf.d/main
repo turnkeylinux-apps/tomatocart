@@ -16,6 +16,12 @@ WORKDIR=/var/cache/tomatocart
 unzip $SRC/TomatoCart-*.zip -d $(dirname $WEBROOT)
 rm $SRC/TomatoCart-*.zip
 mv $(dirname $WEBROOT)/TomatoCart-* $WEBROOT
+
+# patch files to fix captcha not displaying bug
+cd $(dirname $WEBROOT)
+patch tomatocart/includes/functions/html_output.php < tomatocart.patch
+rm tomatocart.patch
+
 chown -R root:root $WEBROOT
 chown www-data:www-data $WEBROOT/*.xml
 chown www-data:www-data $WEBROOT/includes/configure.php
@@ -102,4 +108,7 @@ chmod 640 $WEBROOT/includes/configure.php
 rm -f /tmp/cookie
 rm -f $WORKDIR/*
 rm -rf $WEBROOT/install
+
+apt-get purge -y patch
+apt-get autoremove -y
 

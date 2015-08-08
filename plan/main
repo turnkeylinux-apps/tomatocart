@@ -7,3 +7,4 @@ php5-curl
 
 unzip
 
+patch /* reqd to fix bug */
