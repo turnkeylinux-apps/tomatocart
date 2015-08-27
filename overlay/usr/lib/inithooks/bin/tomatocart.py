@@ -8,6 +8,7 @@ Option:
 
 import sys
 import getopt
+import inithooks_cache
 import random
 import string
 import hashlib
@@ -54,6 +55,8 @@ def main():
             "TomatoCart Email",
             "Enter email address for the 'admin' account.",
             "admin@example.com")
+
+    inithooks_cache.write('APP_EMAIL', email)
 
     salt = ''.join((random.choice(string.letters+string.digits) for x in range(2)))
     hash = ':'.join([hashlib.md5(salt+password).hexdigest(), salt])
