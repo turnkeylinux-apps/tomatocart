@@ -1,0 +1,15 @@
+--- includes/functions/html_output.php	2015-08-08 12:57:12.795801654 +0000
++++ includes/functions/html_output.php.new.shiz	2015-08-08 13:12:14.054934175 +0000
+@@ -141,8 +141,10 @@
+     
+     //return - image with http/s requested is not existed
+     if (strpos($image, 'http://') !== false || strpos($image, 'https://') !== false) {
+-      if (@getimagesize($image) === false) {
+-        return null;
++      if (strstr($image, 'captcha') == false) {
++        if (@getimagesize($image) === false) {
++          return null;
++        }
+       }
+       
+     //local image not existed
